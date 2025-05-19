@@ -5,8 +5,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 
-
-
 export default function ProfilePage(){
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -36,6 +34,20 @@ export default function ProfilePage(){
         }
     }
 
+    const handleUserDetails = async() => {
+        try{
+            setLoading(true);
+            const user = await axios.get("/api/users/userDetails");
+            console.log("User details are ", user.data);
+            router.push(`/profile/${user.data.userResponse._id}`);
+        }
+        catch(error: any){
+            console.log("An error occured!!", error.message);
+        }
+        finally{
+            setLoading(false);
+        }
+    }
 
 
     return (
@@ -44,7 +56,16 @@ export default function ProfilePage(){
             <div>
                 {
                     loading ? (<p className="flex justify-center items-center h-screen text-4xl font-bold">Loading...</p>) :
-                              (<button onClick={handleLogout} className="p-[8px] mt-3 bg-red-600 text-black font-bold rounded-lg cursor-pointer">Logout</button>)
+                            (
+                                <div>
+                                    <button onClick={handleLogout} className="p-[8px] mt-3 bg-red-600 text-black font-bold rounded-lg cursor-pointer">
+                                        Logout
+                                    </button>
+                                    <button onClick={handleUserDetails} className="p-[8px] mt-3 ml-3 bg-red-600 text-black font-bold rounded-lg cursor-pointer">
+                                        User Details
+                                    </button>
+                                </div>
+                            )
                 }
             </div>
         </div>
