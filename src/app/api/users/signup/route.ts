@@ -2,6 +2,7 @@ import { dbConnect } from "@/dbConfig/dbConfig";
 import User from "@/models/userModel"
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs"
+import { sendEmail } from "@/helpers/mailer";
 
 dbConnect();
 
@@ -39,6 +40,15 @@ export async function POST(request: NextRequest){
         });
         const savedUser = await newUser.save();
         console.log(savedUser);
+
+        const emailResponse = await sendEmail({email, emailType: "VERIFY", userId: savedUser._id});
+        if(!emailResponse){
+            return NextResponse.json({
+                success: false,
+                status: 403,
+                message: "Issues is email generation"
+            })
+        }
 
         return NextResponse.json({
             success: true,
