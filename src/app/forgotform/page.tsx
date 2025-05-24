@@ -28,8 +28,13 @@ export default function ForgotForm(){
             setEmail("");
 
         }
-        catch(error: any){
-            console.log(error.message);
+        catch(error: unknown){
+            if(error instanceof Error){
+                console.log(error.message);
+            }
+            else{
+                console.log("Unknown error", error);
+            }
             toast.error("An error occured!");
         }
         finally{

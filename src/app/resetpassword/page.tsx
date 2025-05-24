@@ -1,7 +1,7 @@
 "use client"
 
 import axios from "axios";
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -17,7 +17,7 @@ export default function ResetPassword(){
         setToken(token || "");
     }, [])
 
-    const handleChange = (event: any) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
         setUser((prev) => ({
             ...prev,
@@ -25,7 +25,7 @@ export default function ResetPassword(){
         }))
     }
 
-    const handleChangePassword = async(e: any) => {
+    const handleChangePassword = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         try{
@@ -43,8 +43,13 @@ export default function ResetPassword(){
             router.push("/login");
 
         }
-        catch(error: any){
-            console.log(error.message);
+        catch(error: unknown){
+            if(error instanceof Error){
+                console.log(error.message);
+            }
+            else{
+                console.log("Unknown error", error);
+            }
             toast.error("Something went wrong while changing the password");
         }
         finally{

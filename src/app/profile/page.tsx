@@ -25,8 +25,14 @@ export default function ProfilePage(){
             }
 
         }
-        catch(error: any){
-            console.log("Logout failed ", error.message);
+        catch(error: unknown){
+            if(error instanceof Error){
+                console.log("Logout failed!!", error.message);
+            }
+            else{
+                console.log("Unknown Error", error);
+            }
+            
             toast.error("Something went wrong");
         }
         finally{
@@ -41,8 +47,13 @@ export default function ProfilePage(){
             console.log("User details are ", user.data);
             router.push(`/profile/${user.data.userResponse._id}`);
         }
-        catch(error: any){
-            console.log("An error occured!!", error.message);
+        catch(error: unknown){
+            if(error instanceof Error){
+                console.log("An error occured!!", error.message);
+            }
+            else{
+                console.log("Unknown Error", error);
+            }
         }
         finally{
             setLoading(false);

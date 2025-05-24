@@ -58,13 +58,19 @@ export async function POST(request: NextRequest){
         })
 
     }
-    catch(error: any){
+    catch(error: unknown){
         console.log("Something went wrong while creating the user.");
-        console.log(error.message);
+        if(error instanceof Error){
+            console.log(error.message);
+        }
+        else{
+            console.log("Unknown error", error);
+        }
+
         return NextResponse.json({
             success: false,
             status: 500,
-            message: error.message
+            message: "Internal server error"
         })
     }
 }

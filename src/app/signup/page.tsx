@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios from "axios";
 
 export default function SignupPage(){
@@ -15,7 +15,7 @@ export default function SignupPage(){
     });
 
 
-    const handleChange = (event: any) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
 
         setUser((prev) => ({
@@ -24,7 +24,7 @@ export default function SignupPage(){
         }))
     }
 
-    const handleSignup = async(event: any) => {
+    const handleSignup = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         
         try{
@@ -41,8 +41,8 @@ export default function SignupPage(){
             }
 
         }
-        catch(error: any){
-            console.log("Signup Failed", error.message);
+        catch(error){
+            console.log("Signup Failed", error);
             toast.error("Somthing goes wrong!!");
         }
         finally{

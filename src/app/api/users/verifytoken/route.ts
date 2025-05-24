@@ -45,9 +45,15 @@ export async function POST(request: NextRequest){
         })
 
     }
-    catch(error: any){
+    catch(error: unknown){
         console.log("Something went wrong while verifying the email");
-        console.log(error.message);
+        if(error instanceof Error){
+            console.log(error.message);
+        }
+        else{
+            console.log("Unknown error", error);
+        }
+
         return NextResponse.json({
             success: false,
             status: 500,

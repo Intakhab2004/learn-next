@@ -1,8 +1,8 @@
 "use client"
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 
 export default function LoginPage(){
@@ -14,7 +14,7 @@ export default function LoginPage(){
         password: ""
     })
 
-    const handleChange = (event: any) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
 
         setUser((prev) => ({
@@ -23,7 +23,7 @@ export default function LoginPage(){
         }))
     }
 
-    const handleLogin = async(event: any) => {
+    const handleLogin = async(event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try{
@@ -40,8 +40,14 @@ export default function LoginPage(){
                 toast.error(response.data.message);
             }
         }
-        catch(error: any){
-            console.log("Login failed ", error.message);
+        catch(error: unknown){
+            if(error instanceof Error){
+                console.log("Login failed ", error.message);
+            }
+            else{
+                console.log("Unknown Error", error);
+            }
+
             toast.error("Something went wrong!!");
         }
         finally{

@@ -3,7 +3,13 @@ import User from "@/models/userModel";
 import bcryptjs from "bcryptjs";
 
 
-export const sendEmail = async({email, emailType, userId}: any) => {
+interface SendEmailParams {
+  email: string;
+  emailType: "VERIFY" | "RESET";
+  userId: string;
+}
+
+export const sendEmail = async({email, emailType, userId}: SendEmailParams) => {
     try{
         // generating hashed token 
         const hashedToken = await bcryptjs.hash(userId.toString(), 10);
@@ -47,7 +53,12 @@ export const sendEmail = async({email, emailType, userId}: any) => {
         return response;
 
     }
-    catch(error: any){
-        throw new Error(error.message);
+    catch(error: unknown){
+        if(error instanceof Error){
+            throw new Error(error.message);
+        }
+        else{
+            throw new Error("Something went wrong while sending mail");
+        }
     }
 }

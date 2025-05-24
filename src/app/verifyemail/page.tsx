@@ -26,8 +26,8 @@ export default function VerifyEmail(){
             toast.success("Verification successful");
 
         }
-        catch(error: any){
-            console.log(error.message);
+        catch(error){
+            console.log(error);
             toast.error("Something went wrong in token verification")
         }
     }
