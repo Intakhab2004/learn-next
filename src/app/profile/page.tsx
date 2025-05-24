@@ -18,7 +18,7 @@ export default function ProfilePage(){
 
             if(response.data.success){
                 toast.success(response.data.message);
-                router.push("/login");
+                router.push("/");
             }
             else{
                 toast.error(response.data.message);
